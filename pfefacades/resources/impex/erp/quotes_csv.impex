@@ -1,0 +1,105 @@
+#%import java.io.FileInputStream
+#%import org.apache.commons.lang.StringUtils
+#%impex.enableCodeExecution(true)
+#%impex.enableExternalSyntaxParsing(true)
+"#%
+import java.lang.Integer;
+import java.util.Map;
+import java.util.HashMap;
+import fr.decade.pfe.service.fileService.PfeFileService;
+
+PfeFileService pfeFileService = (PfeFileService) Registry.getApplicationContext().getBean(""pfeFileService"");
+
+Map states = new HashMap();
+states.put(""sellerapprover_approved"",1);
+states.put(""sellerapprover_rejected"",2);
+states.put(""created"",3);
+
+String error="""";
+"
+INSERT Quote;user(uid);code[unique=true];version[unique=true];currency(isocode);name;description;date[dateformat=dd.MM.yyyy HH:mm:ss];state(code);totalPrice;site(uid)[default=powertools];store(uid)[default=powertools]
+"
+#%beforeEach:
+
+
+String customerId = StringUtils.trim((String)line.get(1));
+String quoteId = StringUtils.trim((String)line.get(2));
+String version = StringUtils.trim((String)line.get(3));
+String currency = StringUtils.trim((String)line.get(4));
+String quoteName = StringUtils.trim((String)line.get(5));
+String description = StringUtils.trim((String)line.get(6));
+String creationDate = StringUtils.trim((String)line.get(7));
+String state = StringUtils.trim((String)line.get(8));
+String totalPrice = StringUtils.trim((String)line.get(9));
+line.clear();
+String erreur ="""";
+impex.error(customerId);
+if (StringUtils.isBlank(customerId)) {
+	erreur+=""UserId:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(quoteId)) {
+	erreur+=""QuoteId:Missing value for a required field|"" ;
+}
+if (StringUtils.isNotBlank(quoteId) && !(quoteId.length() == 8 )) {
+	erreur+=""QuoteId:this field must be 8 characters|"" ;
+}
+if (StringUtils.isBlank(version)) {
+	erreur+=""Version:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(currency)) {
+	erreur+=""currency:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(quoteName)) {
+	erreur+=""QuoteName:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(creationDate)) {
+	erreur+=""CreationDate:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(state)) {
+	erreur+=""state:Missing value for a required field|"" ;
+}
+if (StringUtils.isNotBlank(state)&& !states.containsKey(state.toLowerCase())) {
+	erreur+=""state:Unknown state : ""+state+""|"" ;
+}
+if (StringUtils.isBlank(totalPrice)) {
+	erreur+=""totalPrice:Missing value for a required field|"" ;
+}
+impex.error(erreur);
+
+if (StringUtils.isNotBlank(erreur))	{	
+	erreur = customerId + "";"" + quoteId + "";"" + version + "";"" + currency + "";"" + quoteName + "";"" + creationDate + "";"" + description + "";"" + state +"";"" + totalPrice + "";""+ erreur.substring(0,erreur.length()-1) +""\n"";
+	if (StringUtils.isNotBlank(error))	{	
+		error+=erreur;
+	}
+	else {	
+		error=erreur;
+	}
+	line.clear();
+}
+else
+{
+	line.put(Integer.valueOf(1),customerId);
+	line.put(Integer.valueOf(2),quoteId);
+    line.put(Integer.valueOf(3),version);
+    line.put(Integer.valueOf(4),currency);
+	line.put(Integer.valueOf(5),quoteName);
+	if (StringUtils.isBlank(description)) {
+		line.put(Integer.valueOf(6),"""");
+	}
+	else{
+		line.put(Integer.valueOf(6),description);
+	}
+	line.put(Integer.valueOf(7),creationDate);
+	line.put(Integer.valueOf(8),state);
+	line.put(Integer.valueOf(9),totalPrice);
+}
+impex.error(error);
+if (StringUtils.isNotBlank(error)){
+		pfeFileService.createErrorFile(""UserId;QuoteId;version;currency;QuoteName;Description;CreationDate;state;totalPrice;Error"" +""\n"" + error,""$errorCsvFilePath"");
+}
+"
+#% impex.includeExternalData(new FileInputStream("$csvfilePath"), "UTF-8", 1, -1 );
+"
+#%beforeEach:end"
+
+

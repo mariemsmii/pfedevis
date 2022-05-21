@@ -1,0 +1,11 @@
+#Ant properties
+#Wed Dec 18 16:28:41 CET 2019
+version.api=1905
+vendor=hybris
+group.id=de.hybris.platform
+name=pfestorefront
+description=pfestorefront
+builddate=20191218 1623
+releasedate=20190628 1509
+version=1905.9
+module.name=platform-module

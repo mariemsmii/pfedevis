@@ -1,0 +1,81 @@
+#%import java.io.FileInputStream
+#%import org.apache.commons.lang.StringUtils
+#%impex.enableCodeExecution(true)
+#%impex.enableExternalSyntaxParsing(true)
+"#%
+import java.lang.Integer;
+import fr.decade.pfe.service.fileService.PfeFileService;
+
+PfeFileService pfeFileService = (PfeFileService) Registry.getApplicationContext().getBean(""pfeFileService"");
+
+String error="""";
+"
+$productCatalog=powertoolsProductCatalog
+$catalogVersion=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+
+INSERT_UPDATE QuoteEntry;order(code,version)[unique = true];product(code,$catalogVersion)[unique = true];quantity;unit(code);baseprice;totalprice
+
+"
+#%beforeEach:
+
+String quoteId = StringUtils.trim((String)line.get(1));
+String version = StringUtils.trim((String)line.get(2));
+String ProductId = StringUtils.trim((String)line.get(3));
+String quantity = StringUtils.trim((String)line.get(4));
+String unit = StringUtils.trim((String)line.get(5));
+String basePrice = StringUtils.trim((String)line.get(6));
+String totalPrice = StringUtils.trim((String)line.get(7));
+String quote = quoteId + "":"" + version ;
+line.clear();
+
+String erreur ="""";
+if (StringUtils.isBlank(quoteId)&& (quoteId.length()< 8 || quoteId.length()>9)) {
+	erreur+=""quoteId:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(version)) {
+	erreur+=""version:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(ProductId)) {
+	erreur+=""ProductId:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(quantity)) {
+	erreur+=""quantity:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(unit)) {
+	erreur+=""unit:Missing value for a required field|"" ;
+}
+if (StringUtils.isBlank(basePrice)) {
+	erreur+=""basePrice:Missing value for a required field|"" ;
+}
+
+if (StringUtils.isBlank(totalPrice)) {
+	erreur+=""totalPrice:Missing value for a required field|"" ;
+}
+
+	
+if (StringUtils.isNotBlank(erreur))	{	
+	erreur = quoteId + "";"" + version + "";"" + ProductId + "";"" + quantity + "";"" + unit + "";"" + basePrice  + "";"" + totalPrice +  "";"" + erreur.substring(0,erreur.length()-1) +""\n"";
+	if (StringUtils.isNotBlank(error))	{	
+		error+=erreur;
+	}
+	else {
+		error=erreur;
+	}
+	line.clear();
+}
+else {
+	line.put(Integer.valueOf(1),quote);
+	line.put(Integer.valueOf(2),ProductId);
+    line.put(Integer.valueOf(3),quantity);
+    line.put(Integer.valueOf(4),unit);
+	line.put(Integer.valueOf(5),basePrice);
+	line.put(Integer.valueOf(6),totalPrice);
+}
+
+if (StringUtils.isNotBlank(error)){
+		pfeFileService.createErrorFile(""QuoteId;version;ProductId;Quantity;unit;besePrace;TotalPrace;quote;Error "" +""\n"" + error,""$errorCsvFilePath"");
+}
+"
+#% impex.includeExternalData(new FileInputStream("$csvfilePath"), "UTF-8", 1, -1 );
+"
+#%beforeEach:end"
