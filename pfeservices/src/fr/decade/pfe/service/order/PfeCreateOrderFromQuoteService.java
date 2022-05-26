@@ -15,4 +15,6 @@ public interface PfeCreateOrderFromQuoteService
 {
 	OrderModel createOrderFromQuote(QuoteModel quoteReference, UserModel user);
 
+	void EntriesFromQuotesToOrder(QuoteModel quoteModel, OrderModel orderModel);
+
 }

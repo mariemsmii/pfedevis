@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 30, 2022, 3:46:00 PM                    ---
+ * --- Generated at May 24, 2022, 2:25:51 PM                    ---
  * ----------------------------------------------------------------
  */
 package fr.decade.pfe.core.constants;
@@ -24,10 +24,7 @@ public class GeneratedPfeCoreConstants
 	}
 	public static class Attributes
 	{
-		public static class Customer
-		{
-			public static final String CUSTOMERPOSTALCODE = "customerPostalCode".intern();
-		}
+		// no constants defined.
 	}
 	public static class Enumerations
 	{

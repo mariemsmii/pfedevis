@@ -7,6 +7,7 @@ import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParamete
 
 import de.hybris.platform.core.enums.OrderStatus;
 import de.hybris.platform.core.model.order.AbstractOrderEntryModel;
+import de.hybris.platform.core.model.order.OrderEntryModel;
 import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.core.model.order.QuoteModel;
 import de.hybris.platform.core.model.user.UserModel;
@@ -16,7 +17,10 @@ import de.hybris.platform.servicelayer.time.TimeService;
 import de.hybris.platform.site.BaseSiteService;
 import de.hybris.platform.store.services.BaseStoreService;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import fr.decade.pfe.service.order.PfeCreateOrderFromQuoteService;
 
@@ -26,6 +30,8 @@ import fr.decade.pfe.service.order.PfeCreateOrderFromQuoteService;
  */
 public class PfeCreateOrderFromQuoteServiceImpl implements PfeCreateOrderFromQuoteService
 {
+	private static final Logger LOG = Logger.getLogger(PfeCreateOrderFromQuoteServiceImpl.class);
+
 	private ModelService modelService;
 	private TimeService timeService;
 	private BaseSiteService baseSiteService;
@@ -45,7 +51,6 @@ public class PfeCreateOrderFromQuoteServiceImpl implements PfeCreateOrderFromQuo
 		orderModel.setDate(timeService.getCurrentTime());
 		orderModel.setQuoteReference(quoteModel);
 		orderModel.setStatus(OrderStatus.CREATED);
-		orderModel.setEntries(getEntriesFromQuotesToOrder(quoteModel, orderModel));
 		orderModel.setSite(getBaseSiteService().getCurrentBaseSite());
 		orderModel.setStore(getBaseStoreService().getCurrentBaseStore());
 		orderModel.setLanguage(getCommonI18NService().getCurrentLanguage());
@@ -55,13 +60,33 @@ public class PfeCreateOrderFromQuoteServiceImpl implements PfeCreateOrderFromQuo
 
 	private List<AbstractOrderEntryModel> getEntriesFromQuotesToOrder(final QuoteModel quoteModel, final OrderModel orderModel)
 	{
-		final List<AbstractOrderEntryModel> entries = quoteModel.getEntries();
-		for (int i = 0; i < entries.size(); i++)
+		validateParameterNotNullStandardMessage("orderModel", orderModel);
+		validateParameterNotNullStandardMessage("quoteModel", quoteModel);
+		OrderEntryModel orderEntry;
+		final List<AbstractOrderEntryModel> quoteEntries = quoteModel.getEntries();
+		final List<AbstractOrderEntryModel> orderEntries = new ArrayList<>();
+		for (final AbstractOrderEntryModel quoteEntry : quoteEntries)
 		{
-			orderModel.setEntries(entries);
+			orderEntry = modelService.create(OrderEntryModel.class);
+			orderEntry.setOrder(orderModel);
+			orderEntry.setUnit(quoteEntry.getUnit());
+			orderEntry.setQuantity(quoteEntry.getQuantity());
+			orderEntry.setProduct(quoteEntry.getProduct());
+			orderEntry.setBasePrice(quoteEntry.getBasePrice());
+			orderEntry.setTotalPrice(quoteEntry.getTotalPrice());
+			orderEntries.add(orderEntry);
 		}
-		return null;
+		return orderEntries;
 	}
+
+	@Override
+	public void EntriesFromQuotesToOrder(final QuoteModel quoteModel, final OrderModel orderModel)
+	{
+		orderModel.setEntries(getEntriesFromQuotesToOrder(quoteModel, orderModel));
+		modelService.save(orderModel);
+
+	}
+
 
 
 	/**

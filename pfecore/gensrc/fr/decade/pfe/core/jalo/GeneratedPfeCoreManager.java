@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 30, 2022, 3:46:00 PM                    ---
+ * --- Generated at May 24, 2022, 2:25:51 PM                    ---
  * ----------------------------------------------------------------
  */
 package fr.decade.pfe.core.jalo;
@@ -14,14 +14,11 @@ import de.hybris.platform.jalo.SessionContext;
 import de.hybris.platform.jalo.extension.Extension;
 import de.hybris.platform.jalo.type.ComposedType;
 import de.hybris.platform.jalo.type.JaloGenericCreationException;
-import de.hybris.platform.jalo.user.Customer;
-import de.hybris.platform.jalo.user.User;
 import fr.decade.pfe.core.constants.PfeCoreConstants;
 import fr.decade.pfe.core.jalo.ApparelProduct;
 import fr.decade.pfe.core.jalo.ApparelSizeVariantProduct;
 import fr.decade.pfe.core.jalo.ApparelStyleVariantProduct;
 import fr.decade.pfe.core.jalo.ElectronicsColorVariantProduct;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +32,6 @@ public abstract class GeneratedPfeCoreManager extends Extension
 	static
 	{
 		final Map<String, Map<String, AttributeMode>> ttmp = new HashMap();
-		Map<String, AttributeMode> tmp = new HashMap<String, AttributeMode>();
-		tmp.put("customerPostalCode", AttributeMode.INITIAL);
-		ttmp.put("de.hybris.platform.jalo.user.Customer", Collections.unmodifiableMap(tmp));
 		DEFAULT_INITIAL_ATTRIBUTES = ttmp;
 	}
 	@Override
@@ -154,79 +148,6 @@ public abstract class GeneratedPfeCoreManager extends Extension
 	public ElectronicsColorVariantProduct createElectronicsColorVariantProduct(final Map attributeValues)
 	{
 		return createElectronicsColorVariantProduct( getSession().getSessionContext(), attributeValues );
-	}
-	
-	/**
-	 * <i>Generated method</i> - Getter of the <code>Customer.customerPostalCode</code> attribute.
-	 * @return the customerPostalCode
-	 */
-	public Long getCustomerPostalCode(final SessionContext ctx, final Customer item)
-	{
-		return (Long)item.getProperty( ctx, PfeCoreConstants.Attributes.Customer.CUSTOMERPOSTALCODE);
-	}
-	
-	/**
-	 * <i>Generated method</i> - Getter of the <code>Customer.customerPostalCode</code> attribute.
-	 * @return the customerPostalCode
-	 */
-	public Long getCustomerPostalCode(final Customer item)
-	{
-		return getCustomerPostalCode( getSession().getSessionContext(), item );
-	}
-	
-	/**
-	 * <i>Generated method</i> - Getter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @return the customerPostalCode
-	 */
-	public long getCustomerPostalCodeAsPrimitive(final SessionContext ctx, final Customer item)
-	{
-		Long value = getCustomerPostalCode( ctx,item );
-		return value != null ? value.longValue() : 0;
-	}
-	
-	/**
-	 * <i>Generated method</i> - Getter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @return the customerPostalCode
-	 */
-	public long getCustomerPostalCodeAsPrimitive(final Customer item)
-	{
-		return getCustomerPostalCodeAsPrimitive( getSession().getSessionContext(), item );
-	}
-	
-	/**
-	 * <i>Generated method</i> - Setter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @param value the customerPostalCode
-	 */
-	public void setCustomerPostalCode(final SessionContext ctx, final Customer item, final Long value)
-	{
-		item.setProperty(ctx, PfeCoreConstants.Attributes.Customer.CUSTOMERPOSTALCODE,value);
-	}
-	
-	/**
-	 * <i>Generated method</i> - Setter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @param value the customerPostalCode
-	 */
-	public void setCustomerPostalCode(final Customer item, final Long value)
-	{
-		setCustomerPostalCode( getSession().getSessionContext(), item, value );
-	}
-	
-	/**
-	 * <i>Generated method</i> - Setter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @param value the customerPostalCode
-	 */
-	public void setCustomerPostalCode(final SessionContext ctx, final Customer item, final long value)
-	{
-		setCustomerPostalCode( ctx, item, Long.valueOf( value ) );
-	}
-	
-	/**
-	 * <i>Generated method</i> - Setter of the <code>Customer.customerPostalCode</code> attribute. 
-	 * @param value the customerPostalCode
-	 */
-	public void setCustomerPostalCode(final Customer item, final long value)
-	{
-		setCustomerPostalCode( getSession().getSessionContext(), item, value );
 	}
 	
 	@Override

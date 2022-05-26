@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
@@ -70,7 +69,6 @@ public class PfeTransferFileServiceImpl implements PfeTransferFileService
 		{
 			ChannelSftp channelSftp;
 			channelSftp = sftpConnection(username, password, remotHost, remotePort, sessionTimeout, channelTimeout);
-			channelSftp.connect();
 			final Path path = Paths.get(localPath);
 			Files.createDirectories(path);
 			LOG.info("Directory is created!");
@@ -109,10 +107,7 @@ public class PfeTransferFileServiceImpl implements PfeTransferFileService
 		{
 			LOG.error("Failed to change the directory in sftp." + sftpException.getMessage());
 		}
-		catch (final JSchException e)
-		{
-			LOG.error("Failed to connect " + e.getMessage());
-		}
+
 		return downloadFiles;
 	}
 
@@ -125,7 +120,6 @@ public class PfeTransferFileServiceImpl implements PfeTransferFileService
 		{
 			final ChannelSftp channelSftp = sftpConnection(username, password, remoteHost, remotePort, sessionTimeout,
 					channelTimeout);
-			channelSftp.connect();
 			channelSftp.put(csvLocalFile, remoteFile);
 			channelSftp.exit();
 			result = true;
@@ -134,10 +128,7 @@ public class PfeTransferFileServiceImpl implements PfeTransferFileService
 		{
 			LOG.error("Failed to upload the file " + sftpException.getMessage());
 		}
-		catch (final JSchException e)
-		{
-			LOG.error("Failed to connect " + e.getMessage());
-		}
+
 		return result;
 	}
 

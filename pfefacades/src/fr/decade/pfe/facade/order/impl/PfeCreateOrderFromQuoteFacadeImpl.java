@@ -6,6 +6,7 @@ package fr.decade.pfe.facade.order.impl;
 import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 import de.hybris.platform.core.enums.QuoteState;
+import de.hybris.platform.core.model.order.OrderModel;
 import de.hybris.platform.core.model.order.QuoteModel;
 import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.servicelayer.user.UserService;
@@ -39,9 +40,11 @@ public class PfeCreateOrderFromQuoteFacadeImpl implements PfeCreateOrderFromQuot
 
 		final QuoteModel quoteModel = pfeDefaultQuoteFacade.getQuoteModelForCode(quoteCode);
 		final UserModel userModel = userService.getCurrentUser();
+		final OrderModel orderModel;
 		if (quoteModel.getState().equals(QuoteState.BUYER_ORDERED))
 		{
-			pfeCreateOrderFromQuoteService.createOrderFromQuote(quoteModel, userModel);
+			orderModel = pfeCreateOrderFromQuoteService.createOrderFromQuote(quoteModel, userModel);
+			pfeCreateOrderFromQuoteService.EntriesFromQuotesToOrder(quoteModel, orderModel);
 		}
 
 

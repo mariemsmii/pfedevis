@@ -4,10 +4,10 @@
    <group name="addons_responsive">
       <js>/_ui/addons/assistedservicecustomerinterestsaddon/responsive/common/js/assistedservicecustomerinterestsaddon.js</js>
       <css>/_ui/addons/assistedservicecustomerinterestsaddon/responsive/common/css/assistedservicecustomerinterestsaddon.css</css>
-      <js>/_ui/addons/assistedservicepromotionaddon/responsive/common/js/assistedservicepromotionaddon.js</js>
-      <css>/_ui/addons/assistedservicepromotionaddon/responsive/common/css/assistedservicepromotionaddon.css</css>
       <js>/_ui/addons/assistedserviceyprofileaddon/responsive/common/js/assistedserviceyprofileaddon.js</js>
       <css>/_ui/addons/assistedserviceyprofileaddon/responsive/common/css/assistedserviceyprofileaddon.css</css>
+      <js>/_ui/addons/assistedservicepromotionaddon/responsive/common/js/assistedservicepromotionaddon.js</js>
+      <css>/_ui/addons/assistedservicepromotionaddon/responsive/common/css/assistedservicepromotionaddon.css</css>
       <js>/_ui/addons/assistedservicestorefront/responsive/common/js/assistedservicestorefront.js</js>
       <js>/_ui/addons/assistedservicestorefront/responsive/common/js/jquery.tablesorter.pager.js</js>
       <js>/_ui/addons/assistedservicestorefront/responsive/common/js/jquery.tablesorter.min.js</js>

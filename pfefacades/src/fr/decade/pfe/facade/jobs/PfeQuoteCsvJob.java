@@ -191,13 +191,11 @@ public class PfeQuoteCsvJob extends AbstractJobPerformable<CronJobModel>
 														LOG.error("there was a problem while uploading the file  " + filename
 																+ " for the process" + importProcess);
 														jobResult = CronJobResult.ERROR;
-														jobStatus = CronJobStatus.ABORTED;
 													}
 
 													LOG.error("there was a problem while processing the file  " + filename + " for the process"
 															+ importProcess);
 													jobResult = CronJobResult.ERROR;
-													jobStatus = CronJobStatus.ABORTED;
 												}
 												else
 												{
@@ -223,6 +221,7 @@ public class PfeQuoteCsvJob extends AbstractJobPerformable<CronJobModel>
 													{
 														LOG.error("a problem when processing the impex with the process " + importProcess);
 														return new PerformResult(CronJobResult.FAILURE, CronJobStatus.ABORTED);
+
 													}
 												}
 											}
@@ -242,15 +241,11 @@ public class PfeQuoteCsvJob extends AbstractJobPerformable<CronJobModel>
 								}
 							}
 						}
-						i++;
 					}
 				}
 			}
 
 		}
-
-
-
 		return new PerformResult(jobResult, jobStatus);
 
 	}
